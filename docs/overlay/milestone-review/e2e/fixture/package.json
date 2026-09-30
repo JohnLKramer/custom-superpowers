@@ -1,0 +1,7 @@
+{
+  "name": "textstats",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": { "textstats": "bin/textstats.js" },
+  "scripts": { "test": "node --test test/" }
+}

@@ -33,12 +33,16 @@ This structure informs the task decomposition. Each task should produce self-con
 
 ## Task Right-Sizing
 
-A task is the smallest unit that carries its own test cycle and is worth a
-fresh reviewer's gate. When drawing task boundaries: fold setup,
-configuration, scaffolding, and documentation steps into the task whose
-deliverable needs them; split only where a reviewer could meaningfully
-reject one task while approving its neighbor. Each task ends with an
+A task is the smallest unit that carries its own test cycle. When drawing
+task boundaries: fold setup, configuration, scaffolding, and documentation
+steps into the task whose deliverable needs them. Each task ends with an
 independently testable deliverable.
+
+Group tasks into milestones under `## Milestone N: <name>` headings. A
+milestone is the unit a fresh reviewer gates: a run of tasks (usually 2-5)
+that together deliver a slice a reviewer could approve or reject whole. End
+a milestone where later tasks start building on its interfaces, so a flaw
+is caught before work stacks on it. A small plan may be one milestone.
 
 ## Step Granularity
 
@@ -92,6 +96,8 @@ owns the code, in that task's own step style.]
 ## Task Structure
 
 ````markdown
+## Milestone N: [Slice Name]
+
 ### Task N: [Component Name]
 
 **Files:**
@@ -188,7 +194,7 @@ them to review the plan and choose an execution method before implementation.
 
 **"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Please review the plan. Which execution approach would you prefer?**
 
-- **Subagent-driven** - A fresh subagent implements each task and a fresh reviewer checks it before the next one starts, then a whole-branch review at the end. Most thorough; costs a fresh context per task and per review.
+- **Subagent-driven** - A fresh subagent implements each task and a fresh reviewer checks each milestone before the next one starts, then a whole-branch review at the end. Most thorough; costs a fresh context per task and per review.
 - **Native** - I implement every task myself in this session, the way this harness runs work, then one fresh reviewer on the most capable model checks the whole branch. Cheapest and fastest; no independent review until the end. Runs well with a mid-tier session model, since the plan carries the design.
 
 **For this plan I recommend <one of the two>, because <one sentence from the plan: how much the tasks depend on each other's interfaces, how many there are, what a shipped mistake would cost>. Does the plan capture what you want, and which approach should we use?"**

@@ -1,33 +1,34 @@
 # Task Reviewer Prompt Template
 
-Use this template when dispatching a task reviewer subagent. The reviewer
-reads the task's diff once and returns two verdicts: spec compliance and
-code quality.
+Use this template when dispatching a milestone reviewer subagent. The
+reviewer reads the milestone's diff once and returns two verdicts: spec
+compliance and code quality.
 
-**Purpose:** Verify one task's implementation matches its requirements (nothing
+**Purpose:** Verify a milestone's tasks match their requirements (nothing
 more, nothing less) and is well-built (clean, tested, maintainable)
 
 ```
 Subagent (general-purpose):
-  description: "Review Task N (spec + quality)"
+  description: "Review Milestone M (spec + quality)"
   model: [MODEL — REQUIRED: choose per SKILL.md Model Selection; an omitted
          model silently inherits the session's most expensive one]
   prompt: |
-    You are reviewing one task's implementation: first whether it matches its
-    requirements, then whether it is well-built. This is a task-scoped gate,
+    You are reviewing one milestone — one or more tasks: first whether each
+    task matches its requirements, then whether the code is well-built. This
+    is a milestone-scoped gate,
     not a merge review — a broad whole-branch review happens separately after
     all tasks are complete.
 
     ## What Was Requested
 
-    Read the task brief: [BRIEF_FILE]
+    Read every task brief — check each task against its own: [BRIEF_FILES]
 
     Global constraints from the spec/design that bind this task:
     [GLOBAL_CONSTRAINTS]
 
     ## What the Implementer Claims They Built
 
-    Read the implementer's report: [REPORT_FILE]
+    Read the implementers' reports: [REPORT_FILES]
 
     ## Diff Under Review
 
@@ -189,15 +190,16 @@ Subagent (general-purpose):
 
 **Placeholders:**
 - `[MODEL]` — REQUIRED: reviewer model per SKILL.md Model Selection
-- `[BRIEF_FILE]` — REQUIRED: the task brief file (`bash scripts/task-brief PLAN N`
-  prints the path; same file the implementer worked from)
+- `[BRIEF_FILES]` — REQUIRED: the brief file of every task in the milestone
+  (`bash scripts/task-brief PLAN N` prints each path; same files the
+  implementers worked from)
 - `[GLOBAL_CONSTRAINTS]` — the binding requirements copied verbatim from
   the plan's Global Constraints section or the spec: exact values, formats,
   and stated relationships between components (not process rules — those
   are already in this template)
-- `[REPORT_FILE]` — REQUIRED: the file the implementer wrote its detailed
-  report to
-- `[BASE_SHA]` — commit before this task
+- `[REPORT_FILES]` — REQUIRED: the report file of every task in the
+  milestone
+- `[BASE_SHA]` — MILESTONE_BASE, the commit before the milestone's first task
 - `[HEAD_SHA]` — current commit
 - `[DIFF_FILE]` — REQUIRED: the path the controller wrote the review
   package to (`bash scripts/review-package PLAN_FILE BASE HEAD` prints the unique

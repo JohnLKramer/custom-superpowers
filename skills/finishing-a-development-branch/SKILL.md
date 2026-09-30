@@ -176,26 +176,39 @@ git worktree prune  # Self-healing: clean up any stale registrations
 
 **If removal is refused** (`contains modified or untracked files`): the
 worktree holds files that exist nowhere else — uncommitted plans, notes,
-or scratch work. Never `--force` on your own initiative. Show your human
-partner what is at stake and ask:
+or scratch work. These are non-durable intermediate artifacts: they were
+never meant to merge back (see "DO: stage all code written except for
+incremental artifacts" guidance), so they will not survive as part of
+`<feature-branch>`. Losing them silently on removal makes them impossible
+to audit later. Never `--force` on your own initiative until they are
+preserved.
+
+Copy them back into the main workspace as plain files — do **not** `git
+add` them, since they are intentionally not part of the commit history:
 
 ```bash
 git -C "$WORKTREE_PATH" status --porcelain -uall
 ```
 
+For each untracked/modified path listed, copy it into the same relative
+location under `<main repo root>`, creating parent directories as needed:
+
+```bash
+mkdir -p "<main repo root>/$(dirname "$path")"
+cp -R "$WORKTREE_PATH/$path" "<main repo root>/$path"
 ```
-Worktree removal refused — these files were never committed:
+
+Report what was copied:
+
+```
+Worktree removal refused — these files were never committed, so I copied
+them back to <main repo root> (not staged, not committed) before cleanup:
 
 <file list>
-
-1. Commit them to <branch> before cleanup
-2. Move them into <main repo root>
-3. Delete them (unrecoverable)
-
-Which?
 ```
 
-Carry out the choice, then remove the worktree.
+Then remove the worktree (`--force` is now safe — the only copies at risk
+were just preserved).
 
 **Otherwise:** The host environment owns this workspace — leave it in
 place. If your platform provides a workspace-exit tool, use it.
@@ -219,7 +232,7 @@ place. If your platform provides a workspace-exit tool, use it.
 | "'Yeah, get rid of it' counts as confirmation" | Only the typed word `discard` authorizes deletion. |
 | "The PR is up, so the worktree is clutter now" | PR feedback gets fixed in that worktree. It stays until the work lands. |
 | "This other worktree looks stale — I'll clean it too" | Clean up only worktrees under `.worktrees/` or `worktrees/`. Everything else belongs to the host. |
-| "Removal refused — `--force` is just finishing the cleanup" | The refusal means files exist only in that worktree. `--force` destroys them permanently. Show your human partner and ask. |
+| "Removal refused — `--force` is just finishing the cleanup" | The refusal means files exist only in that worktree. Copy them back to the main repo root first (unstaged) — only then is `--force` safe. |
 | "The merged-result failure is probably flaky" | A failing merged result stops everything. Branch and worktree stay put while you investigate. |
 | "The base branch is obviously main" | Confirm the fork point or ask. Merging into the wrong base is expensive to undo. |
 | "The push was rejected — force-push will fix it" | A rejected push means the remote moved. Investigate; force-push only on your human partner's explicit request. |

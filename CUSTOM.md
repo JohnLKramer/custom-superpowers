@@ -48,7 +48,10 @@ claude plugin enable superpowers@claude-plugins-official
 
 ## Customizations
 
-### Milestone review in subagent-driven development
+Each entry is dated with the day it landed on `custom/main` (see
+`customizing-superpowers` skill).
+
+### 2026-09-30 — Milestone review in subagent-driven development
 
 The `subagent-driven-development` skill now reviews code once per milestone instead of after every task. A milestone is a group of 2-5 tasks from a plan. Each task still gets its own fresh implementer and self-review, and the plan still ends with the strong final review over the whole branch. Only the per-task review step moves to the milestone boundary.
 
@@ -57,3 +60,15 @@ This cuts reviewer seats on plans with many small tasks. A 6-task plan split int
 The change reaches four files: `subagent-driven-development/SKILL.md`, `task-reviewer-prompt.md`, and `re-review-prompt.md` carry the review-loop rewrite, and `writing-plans/SKILL.md` adds the `## Milestone N: <name>` heading plans use to mark milestone boundaries.
 
 `docs/overlay/milestone-review.md` has the file-by-file change mapping, the test scenarios used to verify it, and the evidence from running those tests against both the overlay and the unmodified skill.
+
+### 2026-09-30 — customizing-superpowers skill
+
+Adds `skills/customizing-superpowers/SKILL.md`, documenting this fork's
+two-track process for landing a customization: a `custom/feature/*` branch
+off `custom/main` carries the real change plus a dated `CUSTOM.md` entry, and
+a later `feature/*` branch off `main` carries only the matching `CUSTOM.md`
+entry so `main` stays a clean upstream mirror. Also fixes this file: entries
+under `## Customizations` are now dated.
+
+This is a purely additive new file, so no `docs/overlay/` rebase-reapply doc
+is needed.

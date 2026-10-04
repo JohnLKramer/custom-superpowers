@@ -371,3 +371,12 @@ Deferred minors:
 
 Using superpowers:finishing-a-development-branch.
 ```
+
+## Audit
+
+Run `python3 ../auditing-superpowers/scripts/audit.py enabled`. When it exits 0, audit logging is on:
+
+- End every question you put to your human partner with this line: "Audit logging is ON — say 'stop auditing superpowers' to disable."
+- Before deleting the plan's workspace after the final review, run `python3 ../auditing-superpowers/scripts/audit.py copy-ledger <workspace>`, then `python3 ../auditing-superpowers/scripts/harvest.py`. The workspace is deleted as usual; the audit copy stays.
+
+When it exits 1, skip this section.

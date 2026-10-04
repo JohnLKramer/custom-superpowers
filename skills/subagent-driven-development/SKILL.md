@@ -584,3 +584,15 @@ Final reviewer: All requirements met. Deferred minors triaged: none block merge.
 
 Done! Using superpowers:finishing-a-development-branch.
 ```
+
+## Audit
+
+Run `python3 ../auditing-superpowers/scripts/audit.py enabled`. When it exits 0, audit logging is on:
+
+- End every question you put to your human partner with this line: "Audit logging is ON — say 'stop auditing superpowers' to disable."
+- After each dispatch returns, run `python3 ../auditing-superpowers/scripts/audit.py event dispatch role=<implementer|milestone-reviewer|re-review|final-review|fix> milestone=<M> task=<N> round=<R> model=<the model you passed> agent_id=<id from the result, when shown> brief_bytes=<wc -c of the brief> diff_bytes=<wc -c of the review package, for review dispatches> outcome=<ok|findings|blocked>`.
+- After each review verdict, run `python3 ../auditing-superpowers/scripts/audit.py event review role=<role> milestone=<M> round=<R> critical=<n> important=<n> minor=<n>`.
+- At each milestone end, run `python3 ../auditing-superpowers/scripts/harvest.py`.
+- Before deleting the plan's workspace after the final review, run `python3 ../auditing-superpowers/scripts/audit.py copy-ledger <workspace>`, then `python3 ../auditing-superpowers/scripts/harvest.py`. The workspace is deleted as usual; the audit copy stays.
+
+When it exits 1, skip this section.

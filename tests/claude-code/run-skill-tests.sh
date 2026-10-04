@@ -77,6 +77,8 @@ tests=(
     "test-worktree-path-policy.sh"
     "test-sdd-workspace.sh"
     "test-executing-plans-scripts.sh"
+    "test-audit.sh"
+    "test-audit-hooks.sh"
     "test-subagent-driven-development.sh"
 )
 

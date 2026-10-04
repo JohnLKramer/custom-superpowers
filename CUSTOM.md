@@ -72,3 +72,9 @@ under `## Customizations` are now dated.
 
 This is a purely additive new file, so no `docs/overlay/` rebase-reapply doc
 is needed.
+
+### 2026-10-03 — Audit logging
+
+An opt-in audit log for tuning token use and model selection. Say "audit superpowers" to turn it on and "stop auditing superpowers" to turn it off; it is off by default and stays on until turned off. While on, brainstorming and writing-plans log a short plan summary and the model, and subagent-driven development logs one record per dispatch (role, model, round, brief size, outcome), review finding counts, and a copy of the ledger before the plan workspace is deleted. A harvest script joins per-model and per-subagent token totals from the Claude Code transcript. Data lives in `<repo>/.superpowers/audit/<session-id>/`, is never committed, and is never deleted by a skill; every question a hooked skill asks you carries a reminder that audit is on.
+
+The change reaches `skills/auditing-superpowers/` (new), the `## Audit` section of `brainstorming`, `writing-plans`, `subagent-driven-development` and `executing-plans`, and two tests under `tests/claude-code/`. See `docs/overlay/audit-logging.md` for how to reapply the edits to upstream files after an update.

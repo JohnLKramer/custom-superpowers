@@ -283,3 +283,12 @@ A question about a UI topic is not automatically a visual question. "What does p
 
 If they agree to the companion, read the detailed guide before proceeding:
 `skills/brainstorming/visual-companion.md`
+
+## Audit
+
+Run `python3 ../auditing-superpowers/scripts/audit.py enabled`. When it exits 0, audit logging is on:
+
+- End every question you put to your human partner with this line: "Audit logging is ON — say 'stop auditing superpowers' to disable."
+- When the spec is approved (or the bounded or spike path ends), run `python3 ../auditing-superpowers/scripts/audit.py event brainstorm-done path=<spec path or none> summary="<2-4 sentences: what is being built and why>" model=<your model id>`, then `python3 ../auditing-superpowers/scripts/harvest.py`.
+
+When it exits 1, skip this section.

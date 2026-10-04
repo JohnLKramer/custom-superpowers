@@ -208,3 +208,12 @@ them to review the plan and choose an execution method before implementation.
 
 **If Native chosen:**
 - **REQUIRED SUB-SKILL:** Use superpowers:executing-plans
+
+## Audit
+
+Run `python3 ../auditing-superpowers/scripts/audit.py enabled`. When it exits 0, audit logging is on:
+
+- End every question you put to your human partner with this line: "Audit logging is ON — say 'stop auditing superpowers' to disable."
+- After the plan is saved, run `python3 ../auditing-superpowers/scripts/audit.py event plan-written path=<plan path> summary="<2-4 sentences: what the plan builds and how it is split>" tasks=<task count> milestones=<milestone count> model=<your model id>`, then `python3 ../auditing-superpowers/scripts/harvest.py`.
+
+When it exits 1, skip this section.

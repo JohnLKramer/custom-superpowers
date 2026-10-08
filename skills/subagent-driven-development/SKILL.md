@@ -468,11 +468,12 @@ printed path in the final review dispatch, so the final reviewer reads
 one file instead of re-deriving the branch diff with git commands. Dispatch
 on the most capable available model (see Model Selection). If the repo
 being developed has its own review skill, the reviewer uses it — prefer
-`code-review-deep`, else `code-review` else another review skill under this 
-repo — because a repo that knows how to review its own code should review the full branch. 
-Otherwise use superpowers:requesting-code-review's
-[code-reviewer.md](../requesting-code-review/code-reviewer.md). Point it at the ledger's deferred-minor and parked lines so 
-it can triage which must be fixed before merge, and at the brief files of the last milestone's tasks —
+`code-review-deep`, else `code-review` — because a repo that knows how to
+review its own code should review the full branch. Otherwise use
+superpowers:requesting-code-review's
+[code-reviewer.md](../requesting-code-review/code-reviewer.md). Point it at
+the ledger's deferred-minor and parked lines so it can triage which must be
+fixed before merge, and at the brief files of the last milestone's tasks —
 no milestone review ran on them, so the final review is their spec gate.
 
 If the final whole-branch review returns findings, dispatch ONE fix subagent
@@ -584,15 +585,3 @@ Final reviewer: All requirements met. Deferred minors triaged: none block merge.
 
 Done! Using superpowers:finishing-a-development-branch.
 ```
-
-## Audit
-
-Run `python3 ../auditing-superpowers/scripts/audit.py enabled`. When it exits 0, audit logging is on:
-
-- End every question you put to your human partner with this line: "Audit logging is ON — say 'stop auditing superpowers' to disable."
-- After each dispatch returns, run `python3 ../auditing-superpowers/scripts/audit.py event dispatch role=<implementer|milestone-reviewer|re-review|final-review|fix> milestone=<M> task=<N> round=<R> model=<the model you passed> agent_id=<id from the result, when shown> brief_bytes=<wc -c of the brief> diff_bytes=<wc -c of the review package, for review dispatches> outcome=<ok|findings|blocked>`.
-- After each review verdict, run `python3 ../auditing-superpowers/scripts/audit.py event review role=<role> milestone=<M> round=<R> critical=<n> important=<n> minor=<n>`.
-- At each milestone end, run `python3 ../auditing-superpowers/scripts/harvest.py`.
-- Before deleting the plan's workspace after the final review, run `python3 ../auditing-superpowers/scripts/audit.py copy-ledger <workspace>`, then `python3 ../auditing-superpowers/scripts/harvest.py`. The workspace is deleted as usual; the audit copy stays.
-
-When it exits 1, skip this section.
